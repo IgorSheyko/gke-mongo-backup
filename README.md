@@ -21,7 +21,7 @@ https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-clou
 
 - Apply cron.yaml to your kubernetes cluster:
 
-  ```
+   ```
    kubectl apply -f cron.yaml
    ```
 
@@ -35,7 +35,7 @@ https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-clou
     -e MONGO_PASS='<MONGO_PASS>' \
     -e BUCKET_NAME='<BUCKET_NAME>' \
     mongobackup
-    ``
+    ```
     
 ## Backup means restore ^^
 * full restore
