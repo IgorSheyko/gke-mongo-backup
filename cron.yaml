@@ -16,7 +16,7 @@ spec:
               secretName: gcs-key
           containers:
           - name: mongo-backup
-            image: eu.gcr.io/dev-production/gke-mongo-backup:v1.0.2
+            image: <IMAGE_URI>
             volumeMounts:
             - name: google-cloud-key
               mountPath: /var/secrets/google
