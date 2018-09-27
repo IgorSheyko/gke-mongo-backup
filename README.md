@@ -13,14 +13,42 @@ Scripts and config to backup mongodb to Google Cloud Storage in GKE
 https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform?hl=es
 
 - Create kubernetes secret in your kubernetes cluster to store Service Account Credentials:
-  kubectl create secret generic gcs-key --from-file=key.json=<PATH-TO-KEY-FILE>.json
-
-- Build and upload docker image to your registry
+```
+ kubectl create secret generic gcs-key --from-file=key.json
+```
+ 
+- Build and push docker image to your registry
 
 - Apply cron.yaml to your kubernetes cluster:
-  kubectl apply -f cron.yaml
+
+  ```
+   kubectl apply -f cron.yaml
+   ```
 
 ## Local test:
 - Need to save your Google cloud service account credentials json in same path 
 - Run:
-docker run -ti -v .:/var/mongobackup -e GOOGLE_APPLICATION_CREDENTIALS='/var/mongobackup/<CREDENTIALS_FILENAME>.json' -e MONGO_URI='<MONGO_URI>' -e BUCKET_NAME='<BUCKET_NAME>' mongobackup
+    ```
+    docker run -ti -v .:/var/mongobackup \
+    -e GOOGLE_APPLICATION_CREDENTIALS='/var/mongobackup/key.json' \
+    -e MONGO_HOST='<MONGO_HOST>' -e MONGO_USER='<MONGO_USER>' \
+    -e MONGO_PASS='<MONGO_PASS>' \
+    -e BUCKET_NAME='<BUCKET_NAME>' \
+    mongobackup
+    ``
+    
+## Backup means restore ^^
+* full restore
+```
+mongorestore  --drop --gzip \
+--host <MONGO_HOST> \
+-u <MONGO_USER> -p <MONGO_PASS> \
+--archive=<PATH_TO_ARCHIVE>.gz
+```
+* restore one db only
+```
+mongorestore  --nsInclude 'MY_DB_NAME.*' --drop --gzip \
+--host <MONGO_HOST> \
+-u <MONGO_USER> -p <MONGO_PASS> \
+--archive=<PATH_TO_ARCHIVE>.gz
+```
